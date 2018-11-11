@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">CalorEats</string>
+    <string name="suggestions">Suggestions</string>
+    <string name="search">Search</string>
+    <string name="summary">Summary</string>
+    <string name="diary">Diary</string>
+</resources>

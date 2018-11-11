@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "354661415625",
+    "firebase_url": "https://caloreats-5dfa5.firebaseio.com",
+    "project_id": "caloreats-5dfa5",
+    "storage_bucket": "caloreats-5dfa5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:354661415625:android:73cb655850ad044c",
+        "android_client_info": {
+          "package_name": "com.example.rose.caloreats"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "354661415625-5i5kb0phna37pdafjs52o248g02ackjk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.rose.caloreats",
+            "certificate_hash": "a9489af64cd261c523ae139142338a2e02805875"
+          }
+        },
+        {
+          "client_id": "354661415625-hkbr58sct8obg8khtjmmvka6omguj2cl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMIYa1E7oKsoyKPqqz3JzDNg0ZDUzOCzU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "354661415625-hkbr58sct8obg8khtjmmvka6omguj2cl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
