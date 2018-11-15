@@ -2,24 +2,27 @@ package com.example.rose.caloreats;
 
 //from fc4
 
-import android.support.v7.widget.RecyclerView;
-
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class DatabaseHelper extends SQLiteOpenHelper{
+/**
+ * Created by zhitingz on 9/9/16.
+ */
+public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "restaurants.db";
     private static String DB_PATH;
     private SQLiteDatabase db;
     private final Context context;
+    private static int DB_VERSION = 1;
 
     public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, 1);
@@ -28,7 +31,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     }
 
     @Override
-    public void onCreate(SQLiteDatabase db) {
+    public void onCreate(SQLiteDatabase sqLiteDatabase) {
 
     }
 

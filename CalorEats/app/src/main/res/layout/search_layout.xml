@@ -24,26 +24,36 @@
             android:id="@+id/restaurant_type">
         </Spinner>
 
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:hint="Calories"
+            android:id="@+id/calorie_limit">
+        </EditText>
+
         <Spinner
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/price">
         </Spinner>
 
-        <Spinner
-            android:layout_width="match_parent"
+        <Button
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/calorie_limit">
-        </Spinner>
+            android:text="Go"
+            android:gravity="center"
+            android:id="@+id/go">
+
+        </Button>
 
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
+    <ListView
         android:id="@+id/searchResults"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/query_select"
-        app:layout_constraintBottom_toBottomOf="parent"
         />
 
 </android.support.constraint.ConstraintLayout>
