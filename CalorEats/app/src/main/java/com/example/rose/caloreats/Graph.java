@@ -7,7 +7,6 @@ import android.util.AttributeSet;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 //enum Type{ BAR, PIE }
@@ -31,7 +30,7 @@ public class Graph extends View {
 
         if (diary != null) {
 
-            calculateTotals();
+            //calculateTotals();
 
             float unit_width = (float) getWidth() / 15;
             float unit_height = (float) getHeight() / 2000;
@@ -49,8 +48,8 @@ public class Graph extends View {
 
             for (int i = 0; i < 7; i++) {
                 System.out.println(totals[6 - i]);
-                canvas.drawRect(unit_width * (2 * i + 1), unit_height * (totals[6 - i]),
-                        unit_width * (2 * i + 2), 0, paint);
+                canvas.drawRect(unit_width * (2 * i + 1), getHeight() - unit_height * (totals[6 - i]),
+                        unit_width * (2 * i + 2), getHeight(), paint);
             }
         }
     }

@@ -1,13 +1,12 @@
 package com.example.rose.caloreats;
 
 import android.support.v7.app.AppCompatActivity;
-
 import android.os.Bundle;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.FirebaseAuth;
-
+import android.support.v4.app.FragmentPagerAdapter;
 
 import android.support.v4.view.ViewPager;
 
@@ -17,6 +16,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    FragmentPagerAdapter adapterViewPager;
     private FirebaseAuth mAuth;
     ArrayList<ArrayList<Food>> diary;
 
@@ -46,8 +46,11 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<String> dates = new ArrayList<>();
         diary = Firestore.getInstance().getDiary(dates);
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        viewPager.setAdapter(new CustomPagerAdapter(this.getApplicationContext(), this, dates, diary));
+        ViewPager vpPager = (ViewPager) findViewById(R.id.vpPager);
+        adapterViewPager = new MyPagerAdapter(getSupportFragmentManager(), diary, dates);
+        vpPager.setAdapter(adapterViewPager);
+
+
 
     }
 
