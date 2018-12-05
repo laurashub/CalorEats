@@ -12,13 +12,19 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import android.support.v4.app.Fragment;
+import android.widget.EditText;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Set;
 
 public class Firestore {
 
@@ -67,35 +73,48 @@ public class Firestore {
     }
 
 
-    ArrayList<Food> getFoods(String date) {
+    public ArrayList<Food> getFoods(final String date, final DiaryAdapter da, final Graph weekly) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        final ArrayList<Food> dailyFood = new ArrayList<>();
-        System.out.println("Query on: users/" + user.getUid() + "/" + date);
 
-        db.collection("users/" + user.getUid() + "/" + date)
-            .get()
-            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        Log.d("QUERY SUCCESS", document.getId() + " => " + document.getData());
-                        Food food = new Food(document.get("name").toString(),
-                                document.get("cals").toString(),
-                                document.get("price").toString());
+            final ArrayList<Food> dailyFood = new ArrayList<>();
 
-                        dailyFood.add(food);
-                    }
-                } else {
-                    Log.d("QUERY ERROR", "Error getting documents");
-                }
-            }
-        });
+            System.out.println("Query on: users/" + user.getUid() + "/" + date);
 
-        return dailyFood;
+            db.collection("users/" + user.getUid() + "/" + date)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    Log.d("QUERY SUCCESS", document.getId() + " => " + document.getData());
+                                    Food food = new Food(document.get("name").toString(),
+                                            document.get("cals").toString(),
+                                            document.get("price").toString());
+
+                                    dailyFood.add(food);
+                                }
+
+                                if (da != null) {
+                                    da.setItems(dailyFood);
+                                }
+
+                                if (weekly != null){
+                                    weekly.updateDiary(date, dailyFood);
+                                }
+
+                            } else {
+                                Log.d("QUERY ERROR", "Error getting documents");
+                            }
+                        }
+                    });
+
+            return dailyFood;
+
     }
 
-    ArrayList<ArrayList<Food>> getDiary(ArrayList<String> dates) {
+    /*
+    public void getDiary(ArrayList<String> dates, UserData userData, Fragment f) {
 
         ArrayList<ArrayList<Food>> temp = new ArrayList<>();
 
@@ -107,9 +126,49 @@ public class Firestore {
             java.sql.Date date = new java.sql.Date(millis - (i * (24*60*60*1000)) );
             String dateQuery = date.toString();
             dates.add(dateQuery);
-            temp.add(i, Firestore.getInstance().getFoods(dateQuery));
+            getFoods(dateQuery, userData, i);
+        }
+    }*/
+
+    public ArrayList<String> getDateArray(){
+
+        ArrayList<String> dates = new ArrayList<>();
+
+        long millis = System.currentTimeMillis();
+
+        //construct diary
+        for (int i = 0; i < 7; i++) {
+
+            java.sql.Date date = new java.sql.Date(millis - (i * (24*60*60*1000)) );
+            String dateQuery = date.toString();
+            dates.add(dateQuery);
         }
 
-        return temp;
+        return dates;
+    }
+
+    public void getCalLimit(EditText cal_limit){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        DocumentReference docRef = db.collection("users").document(user.getUid());
+
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()){
+                    System.out.println("Exists!");
+                } else {
+                    System.out.println("does not exist!");
+                }
+            }
+        });
+
+    }
+
+    public void setCalLimit(int limit){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        Map<String, Integer> map = new HashMap<>();
+        map.put("limit", limit);
+        db.collection("users").document(user.getUid()).set(map);
     }
 }

@@ -6,18 +6,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 public class DiaryAdapter extends ArrayAdapter {
+    private ArrayList<Food> foods;
 
+    public DiaryAdapter(Context context, ArrayList<Food> foods_){
 
-    public DiaryAdapter(Context context, ArrayList<Food> foods){
-        super(context, 0, foods);
+        super(context, 0, foods_);
+        foods = foods_;
+
     }
-
 
     @Override
     public View getView(int position, View theView, ViewGroup parent) {
@@ -38,5 +39,9 @@ public class DiaryAdapter extends ArrayAdapter {
         return theView;
     }
 
-
+    public void setItems(ArrayList<Food> newFoods) {
+        this.foods.clear();
+        this.foods.addAll(newFoods);
+        notifyDataSetChanged();
+    }
 };

@@ -21,14 +21,19 @@ import android.text.method.LinkMovementMethod;
 import android.text.Html;
 
 public class DatabaseAdapter extends CursorAdapter {
-    Context mContext;
-    Activity mActivity;
+    private Context mContext;
+    private Activity mActivity;
+    private MyPagerAdapter myPagerAdapter;
 
 
     public DatabaseAdapter(Context context, Cursor c, boolean autoRequery, Activity activity) {
         super(context, c, autoRequery);
         mContext = context;
         mActivity = activity;
+    }
+
+    public void setMyPagerAdapter(MyPagerAdapter mpa_){
+        myPagerAdapter = mpa_;
     }
 
     @Override

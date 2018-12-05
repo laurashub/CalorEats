@@ -25,6 +25,7 @@ public class QueryFragment extends Fragment {
     // Store instance variables
     private String title;
     private Context mContext;
+    private MyPagerAdapter myPagerAdapter;
 
     // newInstance constructor for creating fragment with arguments
     public static QueryFragment newInstance(String title) {
@@ -100,10 +101,11 @@ public class QueryFragment extends Fragment {
                 args.toArray(new String[0]), "", "", "");
 
         //update listview
+        da.setMyPagerAdapter(myPagerAdapter);
         da.changeCursor(c);
 
         if (c.getCount()==0){
-            Toast.makeText(mContext, "No results found for that query!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "No results found for that query!", Toast.LENGTH_SHORT).show();
         }
 
     }

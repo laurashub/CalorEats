@@ -11,13 +11,12 @@ import java.util.ArrayList;
 public class MyPagerAdapter extends FragmentPagerAdapter {
 
     private static int NUM_ITEMS = 3;
-    ArrayList<ArrayList<Food>> diary;
-    ArrayList<String> dates;
+    UserData userData;
+    private static String[] names = new String[]{"Query", "Diary", "Summary"};
 
-    public MyPagerAdapter(FragmentManager fragmentManager, ArrayList<ArrayList<Food>> diary_, ArrayList<String> dates_) {
+    public MyPagerAdapter(FragmentManager fragmentManager, UserData userData_) {
         super(fragmentManager);
-        diary = diary_;
-        dates = dates_;
+        userData = userData_;
     }
 
     // Returns total number of pages
@@ -33,9 +32,9 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
             case 0: // Fragment # 0 - This will show FirstFragment
                 return QueryFragment.newInstance("Query");
             case 1: // Fragment # 0 - This will show FirstFragment different title
-                return DiaryFragment.newInstance("Diary", diary, dates);
+                return DiaryFragment.newInstance("Diary", userData);
             case 2: // Fragment # 1 - This will show SecondFragment
-                return SummaryFragment.newInstance( "Summary", diary);
+                return SummaryFragment.newInstance( "Summary", userData);
             default:
                 return null;
         }
@@ -44,6 +43,12 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
     // Returns the page title for the top indicator
     @Override
     public CharSequence getPageTitle(int position) {
-        return "";
+        return names[position];
+    }
+
+    @Override
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
     }
 }
+

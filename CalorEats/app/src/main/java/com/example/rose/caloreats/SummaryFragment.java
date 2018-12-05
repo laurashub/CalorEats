@@ -13,12 +13,12 @@ import java.util.ArrayList;
 public class SummaryFragment extends Fragment {
     // Store instance variables
     private String title;
-    ArrayList<ArrayList<Food>> diary;
+    UserData userData;
 
     // newInstance constructor for creating fragment with arguments
-    public static SummaryFragment newInstance(String title,    ArrayList<ArrayList<Food>> diary_) {
+    public static SummaryFragment newInstance(String title, UserData userData_) {
         SummaryFragment summaryFragment = new SummaryFragment();
-        summaryFragment.diary = diary_;
+        summaryFragment.userData = userData_;
         Bundle args = new Bundle();
         args.putString("title", title);
         summaryFragment.setArguments(args);
@@ -38,8 +38,10 @@ public class SummaryFragment extends Fragment {
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.weekly_summary, container, false);
         Graph weekly = view.findViewById(R.id.weekly_cal);
-        weekly.setDiary(diary);
-        weekly.invalidate();
+        ArrayList<String> dates = Firestore.getInstance().getDateArray();
+        for (String date : dates) {
+            Firestore.getInstance().getFoods(date, null, weekly);
+        }
 
         return view;
     }

@@ -10,6 +10,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class DiaryFragment extends Fragment {
@@ -17,14 +18,13 @@ public class DiaryFragment extends Fragment {
     private String title;
     private int page;
     private int diaryIndex;
-    ArrayList<ArrayList<Food>> diary;
-    ArrayList<String> dates;
+    private UserData userData;
+    private ArrayList<String> dates;
 
     // newInstance constructor for creating fragment with arguments
-    public static DiaryFragment newInstance(String title,  ArrayList<ArrayList<Food>> diary_, ArrayList<String> dates_) {
+    public static DiaryFragment newInstance(String title,  UserData userData_) {
         DiaryFragment diaryFragment = new DiaryFragment();
-        diaryFragment.diary = diary_;
-        diaryFragment.dates = dates_;
+        diaryFragment.userData = userData_;
         Bundle args = new Bundle();
         args.putString("title", title);
         diaryFragment.setArguments(args);
@@ -43,14 +43,12 @@ public class DiaryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.food_diary, container, false);
-        ListView listView = (ListView) view.findViewById(R.id.foodList);
-        TextView dateView = (TextView) view.findViewById(R.id.date_text);
-
-        dateView.setText("Date: " + dates.get(0));
 
         diaryIndex = 0;
-        DiaryAdapter diaryAdapter = new DiaryAdapter(this.getContext(), diary.get(diaryIndex));
-        listView.setAdapter(diaryAdapter);
+
+        dates = Firestore.getInstance().getDateArray();
+
+        switchDate(view);
 
         Button prev = (Button) view.findViewById(R.id.prev);
         Button next = (Button) view.findViewById(R.id.next);
@@ -77,17 +75,23 @@ public class DiaryFragment extends Fragment {
 
         if (previous && diaryIndex != 6){
             diaryIndex++;
-            DiaryAdapter switchDays = new DiaryAdapter(this.getContext(), diary.get(diaryIndex));
-            listView.setAdapter(switchDays);
-            dateView.setText("Date: " + dates.get(diaryIndex));
+            switchDate(v3);
         } else if (!previous && diaryIndex != 0){
             diaryIndex--;
-            DiaryAdapter switchDays = new DiaryAdapter(this.getContext(), diary.get(diaryIndex));
-            listView.setAdapter(switchDays);
-            dateView.setText("Date: " + dates.get(diaryIndex));
+            switchDate(v3);
         } else {
             Toast.makeText(this.getContext(), "Unable to view that day.", Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    private void switchDate(View v){
+        ListView listView = (ListView) v.findViewById(R.id.foodList);
+        TextView dateView = (TextView) v.findViewById(R.id.date_text);
+
+        dateView.setText("Date: " + dates.get(diaryIndex));
+        DiaryAdapter da = new DiaryAdapter(getContext(), new ArrayList<Food>());
+        Firestore.getInstance().getFoods(dates.get(diaryIndex), da, null);
+        listView.setAdapter(da);
     }
 }
