@@ -57,9 +57,8 @@ public class DatabaseAdapter extends CursorAdapter {
         final String price = cursor.getString(cursor.getColumnIndexOrThrow("price"));
 
         System.out.println("Binding view for " + name);
-
         final String restaurantID = cursor.getString(cursor.getColumnIndexOrThrow("restaurant_id"));
-        final String restaurant = getRestaurant(restaurantID);
+        final String restaurant = getRestaurantName(restaurantID);
         /*
         int priceNum = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("price")));
         restaurantPhone.setOnClickListener(new View.OnClickListener() {
@@ -80,19 +79,60 @@ public class DatabaseAdapter extends CursorAdapter {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //only query again if you click the food
+
+                Restaurant newRes = getRestaurant(restaurantID, restaurant);
                 Intent newFood = new Intent(mContext, NewFood.class);
                 newFood.putExtra("name", name);
                 newFood.putExtra("cals", cals);
                 newFood.putExtra("price", price);
-                newFood.putExtra("res_id", restaurantID);
+                newFood.putExtra("restaurant", newRes);
                 mActivity.startActivityForResult(newFood, 123);
             }
         });
     }
 
-    public String getRestaurant(String id){
+    public String getRestaurantName(String id){
         String table = "restaurants";
-        String columns = "restaurants._id as _id, name, rating, url, category_name";
+        String columns = "restaurants._id as _id, name, url";
+
+        List<String> where = new ArrayList<String>();
+        List<String> args = new ArrayList<String>();
+        String queryString = "";
+
+        where.add("(restaurants._id = ?)");
+        args.add(id);
+
+        if (where.size() != 0) {
+            queryString += where.get(0);
+            for (int i = 1; i < where.size(); i++) {
+                queryString += " AND " + where.get(i);
+            }
+        }
+
+        Cursor c = restaurantDB.query(table, columns.split(","), queryString,
+                args.toArray(new String[0]), "", "", "");
+
+        if (c != null) {
+            if (c.getCount() != 1) {
+                System.out.println("Something's wrong :(");
+                return "BAD";
+            } else {
+                c.moveToFirst();
+                String restaurantName = c.getString(c.getColumnIndexOrThrow("name"));
+                System.out.println(restaurantName);
+                return restaurantName;
+            }
+        }
+        return "RESTAURANT NOT FOUND";
+    }
+
+    public Restaurant getRestaurant(String id, String name){
+        //get restaurant information
+        Restaurant restaurantInfo = new Restaurant(Integer.parseInt(id), name);
+
+        String table = "restaurants";
+        String columns = "restaurants._id as _id, name, url";
 
         List<String> where = new ArrayList<String>();
         List<String> args = new ArrayList<String>();
@@ -116,12 +156,53 @@ public class DatabaseAdapter extends CursorAdapter {
                 System.out.println("Something's wrong :(");
             } else {
                 c.moveToFirst();
-                String restaurantName = c.getString(c.getColumnIndexOrThrow("name"));
-                System.out.println(restaurantName);
-                return restaurantName;
+                String url = c.getString(c.getColumnIndexOrThrow("url"));
+                System.out.println(url);
+                restaurantInfo.setUrl(url);
             }
         }
-        return "RESTAURANT NOT FOUND";
+
+        //get location information
+        table = "locations";
+        columns = "locations._id as _id, address, phone";
+
+        where = new ArrayList<String>();
+        args = new ArrayList<String>();
+        queryString = "";
+
+        where.add("(locations._id = ?)");
+        args.add(id);
+
+        if (where.size() != 0) {
+            queryString += where.get(0);
+            for (int i = 1; i < where.size(); i++) {
+                queryString += " AND " + where.get(i);
+            }
+        }
+
+        c = restaurantDB.query(table, columns.split(","), queryString,
+                args.toArray(new String[0]), "", "", "");
+
+        ArrayList<String> addresses = new ArrayList<>();
+        ArrayList<String> phoneNumbers = new ArrayList<>();
+
+
+        if (c != null) {
+            System.out.println("Something's wrong - location :(");
+        } else {
+            while(c.moveToFirst()) {
+                String address = c.getString(c.getColumnIndexOrThrow("address"));
+                addresses.add(address);
+
+                String phone = c.getString(c.getColumnIndexOrThrow("phone"));
+                phoneNumbers.add(phone);
+            }
+        }
+
+        restaurantInfo.setLocations(addresses);
+        restaurantInfo.setPhoneNumbers(phoneNumbers);
+
+        return restaurantInfo;
     }
 
 }
