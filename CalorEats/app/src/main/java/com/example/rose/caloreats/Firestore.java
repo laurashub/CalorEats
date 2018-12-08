@@ -63,6 +63,7 @@ public class Firestore {
         c.put("name", food.getName());
         c.put("cals", food.getCals());
         c.put("price", food.getPrice());
+        c.put("resname", food.getRestaurant());
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -96,6 +97,9 @@ public class Firestore {
                                     Food food = new Food(document.get("name").toString(),
                                             document.get("cals").toString(),
                                             document.get("price").toString());
+                                    if (document.get("resname") != null) {
+                                        food.setRestaurant(document.get("resname").toString());
+                                    }
                                     total += Integer.parseInt(food.getCals());
                                     dailyFood.add(food);
                                 }

@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 public class DiaryAdapter extends ArrayAdapter {
@@ -31,10 +33,12 @@ public class DiaryAdapter extends ArrayAdapter {
         TextView name = (TextView) theView.findViewById(R.id.food_name);
         TextView cals = (TextView) theView.findViewById(R.id.calories);
         TextView price = (TextView) theView.findViewById(R.id.price);
+        TextView restaurant = (TextView) theView.findViewById(R.id.restaurant);
 
         name.setText(food.getName());
         cals.setText(food.getCals());
         price.setText(food.getPrice());
+        restaurant.setText(food.getRestaurant());
 
         return theView;
     }

@@ -170,7 +170,7 @@ public class DatabaseAdapter extends CursorAdapter {
         args = new ArrayList<String>();
         queryString = "";
 
-        where.add("(locations._id = ?)");
+        where.add("(locations.restaurant_id = ?)");
         args.add(id);
 
         if (where.size() != 0) {
@@ -187,10 +187,10 @@ public class DatabaseAdapter extends CursorAdapter {
         ArrayList<String> phoneNumbers = new ArrayList<>();
 
 
-        if (c != null) {
+        if (c == null) {
             System.out.println("Something's wrong - location :(");
         } else {
-            while(c.moveToFirst()) {
+            while(c.moveToNext()) {
                 String address = c.getString(c.getColumnIndexOrThrow("address"));
                 addresses.add(address);
 

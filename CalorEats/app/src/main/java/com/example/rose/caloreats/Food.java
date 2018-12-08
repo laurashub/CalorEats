@@ -7,14 +7,13 @@ public class Food {
     private String price;
     private double dist;
     private String address;
-    private String restaurant;
     private String UID;
+    private String restaurant;
 
-    public Food(String name_, String cals_, String price_, String restaurant_, String address_){
+    public Food(String name_, String cals_, String price_, String address_){
         name = name_;
         cals = cals_;
         price = price_;
-        restaurant = restaurant_;
         address = address_;
         dist = calculateDist();
     }
@@ -53,6 +52,10 @@ public class Food {
 
     public String print(){
         return ("Name: " + name + ", Cals: " + cals + ", Price: " + price + ", UID: " + UID);
+    }
+
+    public void setRestaurant(String restaurant){
+        this.restaurant = restaurant;
     }
 
 
