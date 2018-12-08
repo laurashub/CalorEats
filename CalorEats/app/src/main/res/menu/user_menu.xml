@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="cs371m.witchel.fclistrecyclerview.MainActivity">
     <item
-        android:title="Calorie Limit"
+        android:title="Settings"
         android:id="@+id/calorie_limit"
         android:orderInCategory="100"
         app:showAsAction="always" />

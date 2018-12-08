@@ -18,4 +18,13 @@
         android:inputType="number"
         app:layout_constraintLeft_toRightOf="@+id/calorie_limit"/>
 
+    <Button
+        android:id="@+id/cal_limit_new"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Set"
+        android:onClick="setClicked"
+        app:layout_constraintLeft_toRightOf="@+id/cal_limit_edit"
+        />
+
 </android.support.constraint.ConstraintLayout>

@@ -1,5 +1,6 @@
 package com.example.rose.caloreats;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;

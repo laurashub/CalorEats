@@ -59,6 +59,7 @@ public class QueryFragment extends Fragment {
         final SQLiteDatabase restaurantDb = dbHelper.getReadableDatabase();
 
         final DatabaseAdapter da = new DatabaseAdapter(this.getContext(), null, false, this.getActivity());
+        da.setDatabase(restaurantDb);
 
         lv.setAdapter(da);
 
@@ -88,6 +89,12 @@ public class QueryFragment extends Fragment {
         where.add("(foods.calories < ?)");
         args.add(calLimit);
 
+        EditText priceLimitET = (EditText) v2.findViewById(R.id.price);
+        String priceLimit = priceLimitET.getText().toString();
+
+        where.add("(foods.price < ?)");
+        args.add(priceLimit);
+
         if (where.size() != 0) {
             queryString += where.get(0);
             for (int i = 1; i < where.size(); i++) {
@@ -101,7 +108,6 @@ public class QueryFragment extends Fragment {
                 args.toArray(new String[0]), "", "", "");
 
         //update listview
-        da.setMyPagerAdapter(myPagerAdapter);
         da.changeCursor(c);
 
         if (c.getCount()==0){
@@ -109,4 +115,5 @@ public class QueryFragment extends Fragment {
         }
 
     }
+
 }

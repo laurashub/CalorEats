@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import android.widget.TextView;
 
 public class SummaryFragment extends Fragment {
     // Store instance variables
@@ -37,10 +38,19 @@ public class SummaryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.weekly_summary, container, false);
+
+        TextView eaten = view.findViewById(R.id.eaten);
+        TextView limit = view.findViewById(R.id.limit);
+
+        Firestore.getInstance().getCalLimit(null, limit);
+
         Graph weekly = view.findViewById(R.id.weekly_cal);
         ArrayList<String> dates = Firestore.getInstance().getDateArray();
+
+        Firestore.getInstance().getFoods(dates.get(0), null, null, eaten);
+
         for (String date : dates) {
-            Firestore.getInstance().getFoods(date, null, weekly);
+            Firestore.getInstance().getFoods(date, null, weekly, null);
         }
 
         return view;

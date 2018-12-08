@@ -48,6 +48,9 @@ public class DiaryFragment extends Fragment {
 
         dates = Firestore.getInstance().getDateArray();
 
+        TextView limit = view.findViewById(R.id.limit);
+        Firestore.getInstance().getCalLimit(null, limit);
+
         switchDate(view);
 
         Button prev = (Button) view.findViewById(R.id.prev);
@@ -70,9 +73,6 @@ public class DiaryFragment extends Fragment {
 
     private void dateNaviClicked(View v3, boolean previous){
 
-        ListView listView = (ListView) v3.findViewById(R.id.foodList);
-        TextView dateView = (TextView) v3.findViewById(R.id.date_text);
-
         if (previous && diaryIndex != 6){
             diaryIndex++;
             switchDate(v3);
@@ -89,9 +89,11 @@ public class DiaryFragment extends Fragment {
         ListView listView = (ListView) v.findViewById(R.id.foodList);
         TextView dateView = (TextView) v.findViewById(R.id.date_text);
 
+        TextView eaten = v.findViewById(R.id.eaten);
+
         dateView.setText("Date: " + dates.get(diaryIndex));
         DiaryAdapter da = new DiaryAdapter(getContext(), new ArrayList<Food>());
-        Firestore.getInstance().getFoods(dates.get(diaryIndex), da, null);
+        Firestore.getInstance().getFoods(dates.get(diaryIndex), da, null, eaten);
         listView.setAdapter(da);
     }
 }
