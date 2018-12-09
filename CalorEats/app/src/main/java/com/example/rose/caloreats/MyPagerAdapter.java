@@ -10,9 +10,9 @@ import java.util.ArrayList;
 
 public class MyPagerAdapter extends FragmentPagerAdapter {
 
-    private static int NUM_ITEMS = 3;
+    private static int NUM_ITEMS = 4;
     UserData userData;
-    private static String[] names = new String[]{"Query", "Diary", "Summary"};
+    private static String[] names = new String[]{"Suggestions","Query", "Diary", "Summary"};
 
     public MyPagerAdapter(FragmentManager fragmentManager, UserData userData_) {
         super(fragmentManager);
@@ -30,10 +30,12 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0: // Fragment # 0 - This will show FirstFragment
-                return QueryFragment.newInstance("Query");
+                return SuggestionsFragment.newInstance("Suggestions");
             case 1: // Fragment # 0 - This will show FirstFragment different title
-                return DiaryFragment.newInstance("Diary", userData);
+                return QueryFragment.newInstance("Query");
             case 2: // Fragment # 1 - This will show SecondFragment
+                return DiaryFragment.newInstance("Diary", userData);
+            case 3:
                 return SummaryFragment.newInstance( "Summary", userData);
             default:
                 return null;

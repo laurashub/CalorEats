@@ -27,6 +27,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.List;
 import java.util.jar.Attributes;
 
@@ -241,5 +242,20 @@ public class MapHolder implements OnMapReadyCallback {
         }
 
     }
+
+    public void getLatLngs(final LatLng myPos, ArrayList<String> addresses, final HashMap<String, LatLng> mappings, final SuggestionsFragment sugFrag){
+        for(final String address : addresses) {
+
+            new NameToLatLngTask(context, address,
+                    new NameToLatLngTask.OnLatLngCallback() {
+                        @Override
+                        public void onLatLng(LatLng a) {
+                            mappings.put(address, a);
+                            sugFrag.checkReady(myPos, mappings);
+                        }
+                    });
+        }
+    }
+
 
 }
