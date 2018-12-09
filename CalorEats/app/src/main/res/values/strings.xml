@@ -4,4 +4,17 @@
     <string name="search">Search</string>
     <string name="summary">Summary</string>
     <string name="diary">Diary</string>
+    <string-array name="restaurants_array">
+        <item>Nearby restaurants</item>
+        <item>Chick-fil-a</item>
+        <item>Wendy\'s</item>
+        <item>Whataburger</item>
+        <item>Torchy\'s Tacos</item>
+        <item>P. Terry\'s</item>
+        <item>Taco Cabana</item>
+        <item>Kirbey Lane Cafe</item>
+        <item>Which Wich</item>
+        <item>Thai, How Are You</item>
+        <item>In-N-Out</item>
+    </string-array>
 </resources>

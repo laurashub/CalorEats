@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.content.Context;
 import android.app.Activity;
@@ -48,6 +50,14 @@ public class QueryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.search_layout, container, false);
+
+        Spinner restaurantSpinner = (Spinner) view.findViewById(R.id.restaurant);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                R.array.restaurants_array, android.R.layout.simple_spinner_item);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        restaurantSpinner.setAdapter(adapter);
+
         ListView lv = (ListView) view.findViewById(R.id.searchResults);
 
         DatabaseHelper dbHelper = new DatabaseHelper(this.getContext());
@@ -75,13 +85,21 @@ public class QueryFragment extends Fragment {
     }
 
     private void queryClicked(View v2, DatabaseAdapter da, SQLiteDatabase db) {
-        // where contains the selection clause and args contains the coresponding arguments
+        // where contains the selection clause and args contains the corresponding arguments
         List<String> where = new ArrayList<String>();
         List<String> args = new ArrayList<String>();
         String queryString = "";
 
         String table = "foods";
         String columns = "foods._id as _id, name, calories, price, restaurant_id"; //attribute of that record
+
+        Spinner spinner = (Spinner) v2.findViewById(R.id.restaurant);
+        String restaurantName = spinner.getSelectedItem().toString();
+
+        if (!restaurantName.equals("Nearby restaurants")){
+            where.add("(foods.restaurant_id = ?)" );
+            args.add(getRestaurantID(restaurantName, db));
+        }
 
         EditText calLimitET = (EditText) v2.findViewById(R.id.calorie_limit);
         String calLimit = calLimitET.getText().toString();
@@ -114,6 +132,42 @@ public class QueryFragment extends Fragment {
             Toast.makeText(getContext(), "No results found for that query!", Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    public String getRestaurantID(String restaurantName, SQLiteDatabase db){
+
+        String table = "restaurants";
+        String columns = "restaurants._id as _id, name, url";
+
+        List<String> where = new ArrayList<String>();
+        List<String> args = new ArrayList<String>();
+        String queryString = "";
+
+        where.add("(restaurants.name = ? )");
+        args.add(restaurantName);
+
+        if (where.size() != 0) {
+            queryString += where.get(0);
+            for (int i = 1; i < where.size(); i++) {
+                queryString += " AND " + where.get(i);
+            }
+        }
+
+        Cursor c = db.query(table, columns.split(","), queryString,
+                args.toArray(new String[0]), "", "", "");
+
+        if (c != null) {
+            if (c.getCount() != 1) {
+                System.out.println("Something's wrong :(");
+                return "BAD";
+            } else {
+                c.moveToFirst();
+                String resID = c.getString(c.getColumnIndexOrThrow("restaurants._id"));
+                System.out.println(resID);
+                return resID;
+            }
+        }
+        return "RESTAURANT ID NOT FOUND";
     }
 
 }

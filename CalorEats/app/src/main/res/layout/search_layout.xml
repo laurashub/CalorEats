@@ -23,7 +23,7 @@
         <Spinner
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:id="@+id/restaurant_type"
+            android:id="@+id/restaurant"
             android:layout_weight="1">
         </Spinner>
 
