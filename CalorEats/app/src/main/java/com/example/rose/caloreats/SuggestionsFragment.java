@@ -2,6 +2,7 @@ package com.example.rose.caloreats;
 
 //lots of this code modified from https://stackoverflow.com/questions/42413308/java-lang-illegalargumentexception-invalid-provider-null-when-openning-mapsact
 
+import android.database.MergeCursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
@@ -42,6 +43,7 @@ import android.Manifest;
 
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URLEncoder;
@@ -67,6 +69,10 @@ public class SuggestionsFragment extends Fragment {
     LocationListener ll;
     SQLiteDatabase db;
 
+    HashMap<String, Integer> data;
+    ArrayList<String> dates;
+    DatabaseAdapter da;
+
     // newInstance constructor for creating fragment with arguments
     public static SuggestionsFragment newInstance(String title) {
         SuggestionsFragment suggestionsFragment = new SuggestionsFragment();
@@ -80,7 +86,6 @@ public class SuggestionsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     // Inflate the view for the fragment based on layout XML
@@ -97,9 +102,19 @@ public class SuggestionsFragment extends Fragment {
         }
         db = dbHelper.getReadableDatabase();
 
+        da = new DatabaseAdapter(this.getContext(), null, false, this.getActivity());
+        da.setDatabase(db);
+
+
+        ListView suggestionsList = (ListView) view.findViewById(R.id.suggestion_list);
+        suggestionsList.setAdapter(da);
+
         mapFragment = SupportMapFragment.newInstance();
         mapHolder = new MapHolder(getContext());
         mapFragment.getMapAsync(mapHolder);
+        data = new HashMap<>();
+
+        dates = Firestore.getInstance().getDateArray();
 
         getActivity().getSupportFragmentManager().beginTransaction()
                 .add(R.id.map_fragment, mapFragment)
@@ -113,6 +128,8 @@ public class SuggestionsFragment extends Fragment {
                getMyLocation();
             }
         });
+
+        Firestore.getInstance().todaysCounts(data);
 
         return view;
     }
@@ -139,27 +156,23 @@ public class SuggestionsFragment extends Fragment {
             }
         };
 
+        //get permission to get location
         if (ContextCompat.checkSelfPermission(getContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
-            // No explanation needed, we can request the permission.
 
             ActivityCompat.requestPermissions(getActivity(),
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     123);
         } else {
-            System.out.println("Location manager requesting location updates");
             lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
         }
-        // Register the listener with the Location Manager to receive location updates
-
 
     }
 
     public void calculateDistances(Location location){
         lm.removeUpdates(ll); //job is done for now, don't waste energy listening
         LatLng myPos = new LatLng(location.getLatitude(), location.getLongitude());
-
 
         //get location information
         String table = "locations";
@@ -172,6 +185,7 @@ public class SuggestionsFragment extends Fragment {
 
         Cursor c = db.query(table, columns.split(","), "",
                 args.toArray(new String[0]), "", "", "");
+
 
         ArrayList<String> addresses = new ArrayList<>();
 
@@ -190,21 +204,20 @@ public class SuggestionsFragment extends Fragment {
         HashMap<String, LatLng> mappings = new HashMap<>();
         mapHolder.getLatLngs(myPos, addresses, mappings, this);
 
-
     }
 
     public void checkReady(LatLng myPos, HashMap<String, LatLng> mappings){
-        if (mappings.entrySet().size() == 17){
+        if (mappings.entrySet().size() == 17){ //probably shouldn't hardcode this number
             getDistanceInformation(myPos, mappings);
+            getSuggestedFoods(getDistanceInformation(myPos, mappings));
         }
     }
 
 
-    public void getDistanceInformation(LatLng myPos, HashMap<String, LatLng> mappings) {
+    public ArrayList<String> getDistanceInformation(LatLng myPos, HashMap<String, LatLng> mappings) {
        //calculate distance to each based on difference between latitude and longitude
         HashMap<Double, String> distanceMap = new HashMap<>();
         ArrayList<Double> distanceList = new ArrayList<>();
-        double minDist = Integer.MAX_VALUE;
         for (String address : mappings.keySet()){
             double currentDistance = findDistance(myPos, mappings.get(address));
             distanceMap.put(currentDistance, address);
@@ -218,12 +231,100 @@ public class SuggestionsFragment extends Fragment {
             sortedList.add(distanceMap.get(dist));
         }
 
-        for (String address : sortedList){
-            System.out.println("Address: " + address);
+        return sortedList;
+    }
+
+    public void getSuggestedFoods(ArrayList<String> sortedAddresses){
+
+        ArrayList<Cursor> cArray = new ArrayList<>();
+
+        int calsRemaining = 0;
+
+        if (data.get(dates.get(0)) != null && data.get("limit") != null) {
+            calsRemaining = data.get("limit") - data.get(dates.get(0));
+
+            System.out.println("Cals remaining: " + calsRemaining);
+
+            for (String address : sortedAddresses){
+                System.out.println(address);
+
+                //get restaurant id of corresponding
+                String res_id = getRestaurantIDfromAddress(address);
+
+                //find foods at that restaurant that are within cal limit and add them to list
+                String table = "foods";
+                String columns = "foods._id as _id, name, calories, price, restaurant_id";
+
+                List<String> where = new ArrayList<String>();
+                List<String> args = new ArrayList<String>();
+                String queryString = "";
+
+                where.add("(foods.restaurant_id = ? )");
+                args.add(res_id);
+
+                where.add("(foods.calories < ? )");
+                args.add(Integer.toString(calsRemaining));
+
+                if (where.size() != 0) {
+                    queryString += where.get(0);
+                    for (int i = 1; i < where.size(); i++) {
+                        queryString += " AND " + where.get(i);
+                    }
+                }
+
+                Cursor c = db.query(table, columns.split(","), queryString,
+                        args.toArray(new String[0]), "", "", "");
+
+                cArray.add(c);
+
+            }
+
+            MergeCursor mc = new MergeCursor(cArray.toArray(new Cursor[0]));
+            da.changeCursor(mc);
+
+
         }
+
+    }
+
+    public String getRestaurantIDfromAddress(String address){
+
+        String table = "locations";
+        String columns = "locations._id as _id, restaurant_id, address, phone";
+
+        List<String> where = new ArrayList<String>();
+        List<String> args = new ArrayList<String>();
+        String queryString = "";
+
+        where.add("(locations.address = ? )");
+        args.add(address);
+
+        if (where.size() != 0) {
+            queryString += where.get(0);
+            for (int i = 1; i < where.size(); i++) {
+                queryString += " AND " + where.get(i);
+            }
+        }
+
+        Cursor c = db.query(table, columns.split(","), queryString,
+                args.toArray(new String[0]), "", "", "");
+
+        if (c != null) {
+            if (c.getCount() != 1) {
+                System.out.println("Something's wrong :(");
+                return "BAD";
+            } else {
+                c.moveToFirst();
+                String resID = c.getString(c.getColumnIndexOrThrow("locations.restaurant_id"));
+                System.out.println(resID);
+                return resID;
+            }
+        }
+        return "RESTAURANT ID NOT FOUND";
     }
 
     public Double findDistance(LatLng myPos, LatLng otherPos){
+        //get a rough distance because I can't get distance matrix to work :(
         double x1 = myPos.latitude;
         double y1 =  myPos.longitude;
         double x2 = otherPos.latitude;

@@ -78,7 +78,9 @@ public class Firestore {
     }
 
 
-    public ArrayList<Food> getFoods(final String date, final DiaryAdapter da, final Graph weekly, final TextView totalTV) {
+    public ArrayList<Food> getFoods(final String date, final DiaryAdapter da,
+                                    final Graph weekly, final TextView totalTV,
+                                    final HashMap<String, Integer> totals) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
             final ArrayList<Food> dailyFood = new ArrayList<>();
@@ -116,6 +118,10 @@ public class Firestore {
                                     totalTV.setText(Integer.toString(total));
                                 }
 
+                                if (totals != null){
+                                    totals.put(date, total);
+                                }
+
                             } else {
                                 Log.d("QUERY ERROR", "Error getting documents");
                             }
@@ -123,6 +129,12 @@ public class Firestore {
                     });
 
             return dailyFood;
+
+    }
+
+    public void todaysCounts(HashMap<String, Integer> data){
+        getCalLimit (null, null, data);
+        getFoods(getDateArray().get(0), null, null, null, data);
 
     }
 
@@ -152,7 +164,6 @@ public class Firestore {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.exists()){
-                    System.out.println("Exists!");
                     if (cal_limit != null) {
                         cal_limit.setText(documentSnapshot.get("limit").toString());
                     }
@@ -178,5 +189,11 @@ public class Firestore {
         Map<String, Integer> map = new HashMap<>();
         map.put("limit", limit);
         db.collection("users").document(user.getUid()).set(map, SetOptions.merge());
+    }
+
+    public ArrayList<Food> getFoods(final String date, final DiaryAdapter da,
+                                    final Graph weekly, final TextView totalTV){
+        return getFoods(date, da, weekly, totalTV, null);
+
     }
 }

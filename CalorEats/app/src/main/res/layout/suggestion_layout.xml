@@ -9,6 +9,11 @@
         android:layout_height="wrap_content"
         android:text="Generate suggestions"/>
 
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/suggestion_list"/>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
