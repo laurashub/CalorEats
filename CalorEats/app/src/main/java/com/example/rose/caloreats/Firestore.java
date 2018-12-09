@@ -143,7 +143,7 @@ public class Firestore {
         return dates;
     }
 
-    public void getCalLimit(final EditText cal_limit, final TextView textView){
+    public void getCalLimit(final EditText cal_limit, final TextView textView, final HashMap<String, Integer> totals){
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         DocumentReference docRef = db.collection("users").document(user.getUid());
@@ -160,6 +160,11 @@ public class Firestore {
                     if (textView != null){
                         textView.setText(documentSnapshot.get("limit").toString());
                     }
+
+                    if (totals != null){
+                        totals.put("limit", Integer.parseInt(documentSnapshot.get("limit").toString()));
+                    }
+
                 } else {
                     System.out.println("does not exist!");
                 }

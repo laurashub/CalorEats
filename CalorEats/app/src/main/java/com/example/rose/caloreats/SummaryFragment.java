@@ -42,16 +42,24 @@ public class SummaryFragment extends Fragment {
         TextView eaten = view.findViewById(R.id.eaten);
         TextView limit = view.findViewById(R.id.limit);
 
-        Firestore.getInstance().getCalLimit(null, limit);
+        Firestore.getInstance().getCalLimit(null, limit, null);
 
         Graph weekly = view.findViewById(R.id.weekly_cal);
         ArrayList<String> dates = Firestore.getInstance().getDateArray();
 
-        Firestore.getInstance().getFoods(dates.get(0), null, null, eaten);
+        int i = 0;
+        for (String date : dates){
 
-        for (String date : dates) {
-            Firestore.getInstance().getFoods(date, null, weekly, null);
+            if (i==0){
+                Firestore.getInstance().getFoods(date, null, weekly, eaten);
+                i++;
+            }
+
+            else{
+                Firestore.getInstance().getFoods(date, null, weekly, null);
+            }
         }
+
 
         return view;
     }

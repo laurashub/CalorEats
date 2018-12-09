@@ -53,8 +53,6 @@ public class NewFood extends AppCompatActivity {
         caloriesT = findViewById(R.id.calories);
         priceT = findViewById(R.id.price);
 
-
-        
         imageView = findViewById(R.id.food_image);
 
         mapButton = findViewById(R.id.map_button);
@@ -79,6 +77,8 @@ public class NewFood extends AppCompatActivity {
 
         final Food food = new Food( name, cals, price);
         food.setRestaurant(res.name);
+
+        Storage.getInstance().displayJpg(food, imageView);
 
         mapFragment = SupportMapFragment.newInstance();
         mapHolder = new MapHolder(this);

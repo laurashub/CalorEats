@@ -63,6 +63,9 @@ public class MainActivity extends AppCompatActivity {
         Firestore firestore = Firestore.getInstance();
         firestore.init();
 
+        Storage storage = Storage.getInstance();
+        storage.init(getApplicationContext());
+
         UserData data = new UserData();
 
         ViewPager vpPager = (ViewPager) findViewById(R.id.vpPager);

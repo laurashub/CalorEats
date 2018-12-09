@@ -19,7 +19,7 @@ public class Settings extends AppCompatActivity {
         Intent intent = getIntent();
         cal_limit = (EditText) findViewById(R.id.cal_limit_edit);
         set = (Button) findViewById(R.id.cal_limit_new);
-        Firestore.getInstance().getCalLimit(cal_limit, null);
+        Firestore.getInstance().getCalLimit(cal_limit, null, null);
     }
 
     public void setClicked(View view){

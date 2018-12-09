@@ -49,7 +49,7 @@ public class DiaryFragment extends Fragment {
         dates = Firestore.getInstance().getDateArray();
 
         TextView limit = view.findViewById(R.id.limit);
-        Firestore.getInstance().getCalLimit(null, limit);
+        Firestore.getInstance().getCalLimit(null, limit, null);
 
         switchDate(view);
 

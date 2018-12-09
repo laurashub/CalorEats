@@ -10,6 +10,7 @@ import android.graphics.Paint;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Collections;
 
 //enum Type{ BAR, PIE }
 
@@ -17,46 +18,72 @@ import java.util.HashMap;
 public class Graph extends View {
 
     Paint paint;
-    ArrayList<ArrayList<Food>> diary;
+    ArrayList<String> dates;
     HashMap<String, Integer> totals;
+    int xIncrement = 15;
+    int yIncrement;
+    int limit;
 
     public Graph (Context context, AttributeSet attrs) {
         super(context, attrs);
         totals = new HashMap<>();
         paint = new Paint();
+        Firestore.getInstance().getCalLimit(null, null, totals);
     }
 
     protected void onDraw(Canvas canvas){
         super.onDraw(canvas);
 
+        this.dates = Firestore.getInstance().getDateArray();
 
-        float unit_width = (float) getWidth() / 15;
-        float unit_height = (float) getHeight() / 2000;
+        if (totals.keySet().size() == 8) {
 
-        System.out.println("Width: " + unit_width + ", height: " + unit_height);
+            int max = Collections.max(totals.values());
+            yIncrement = Math.max(((max + 99) / 100 ) * 100, totals.get("limit"));
+            yIncrement += 200;
 
-        paint.setColor(Color.BLACK);
-        paint.setStyle(Paint.Style.FILL);
+            //only draw if we have all the information that we need
+            float unit_width = (float) getWidth() / 15;
+            float unit_height = (float) getHeight() / yIncrement;
 
-        canvas.drawRect(0, 0,
+            System.out.println("Width: " + unit_width + ", height: " + unit_height);
+
+            paint.setColor(Color.BLACK);
+            paint.setStyle(Paint.Style.FILL);
+
+            canvas.drawRect(0, 0,
                     getWidth(), getHeight(), paint);
 
-        paint.setColor(Color.WHITE);
-        paint.setStyle(Paint.Style.FILL);
 
-        for (int i = 0; i < 10; i++){
-                canvas.drawRect(0, (i*200)*unit_height,
-                        getWidth(), ((i*200)+2)*unit_height, paint);
-        }
+            for (int i = 0; i < (yIncrement / 200); i++) {
 
-        paint.setColor(Color.BLUE);
-        paint.setStyle(Paint.Style.FILL);
+                paint.setColor(Color.WHITE);
+                paint.setStyle(Paint.Style.FILL);
 
-        ArrayList<String> dates = Firestore.getInstance().getDateArray();
-        for (int i = 0; i < 7; i++) {
-            canvas.drawRect(unit_width * (2 * i + 1),
-                    getHeight() - unit_height * (totals.getOrDefault(dates.get(6-i), 0)),
+                canvas.drawRect(0, (i * 200) * unit_height,
+                        getWidth(), ((i * 200) + 2) * unit_height, paint);
+
+                paint.setTextSize(30);
+                canvas.drawText(Integer.toString(yIncrement - (i * 200)), 5, i * 200 * unit_height-2, paint);
+                System.out.println("Drawing line at: " + Integer.toString(i * 200));
+            }
+
+            paint.setColor(Color.RED);
+            paint.setStyle(Paint.Style.FILL);
+
+            canvas.drawRect(0, getHeight() - unit_height * totals.get("limit")-(2*unit_height),
+                    getWidth(), (getHeight() - unit_height * totals.get("limit")) + (2*unit_height) , paint);
+
+            System.out.println("Drawing limit line");
+
+            paint.setColor(Color.BLUE);
+            paint.setStyle(Paint.Style.FILL);
+
+            for (int i = 0; i < 7; i++) {
+                canvas.drawRect(unit_width * (2 * i + 1),
+                        getHeight() - unit_height * (totals.getOrDefault(dates.get(6 - i), 0)),
                         unit_width * (2 * i + 2), getHeight(), paint);
+            }
         }
     }
 
@@ -70,7 +97,12 @@ public class Graph extends View {
         }
 
         totals.put(date, total);
+
         this.invalidate();
+    }
+
+    public void setLimit(int limit){
+        this.limit = limit;
     }
 
 }

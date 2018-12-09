@@ -58,6 +58,12 @@ public class Food {
         this.restaurant = restaurant;
     }
 
+    public String getFoodId(){
+        String foodID = (restaurant+"/"+name).replaceAll(" ", "_").toLowerCase();
+        System.out.println("Food ID: " + foodID);
+        return foodID;
+    }
+
 
 
 }
