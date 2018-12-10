@@ -1,0 +1,57 @@
+      38 text files.
+classified 38 files      37 unique files.                              
+Counting:  19Counting:  18       1 file ignored.
+
+github.com/AlDanial/cloc v 1.76  T=1.04 s (35.6 files/s, 2897.6 lines/s)
+-------------------------------------------------------------------------------------------------------------------------
+File                                                                                  blank        comment           code
+-------------------------------------------------------------------------------------------------------------------------
+app/src/main/java/com/example/rose/caloreats/SuggestionsFragment.java                    88             16            257
+app/src/main/java/com/example/rose/caloreats/MapHolder.java                              40             16            212
+app/src/main/res/drawable/ic_launcher_background.xml                                      0              0            170
+app/src/main/java/com/example/rose/caloreats/Firestore.java                              41              6            150
+app/src/main/java/com/example/rose/caloreats/DatabaseAdapter.java                        41              4            144
+app/src/main/res/layout/weekly_summary.xml                                               21              0            135
+app/src/main/java/com/example/rose/caloreats/QueryFragment.java                          37              6            129
+app/src/main/java/com/example/rose/caloreats/NewFood.java                                31              1             90
+app/src/main/res/layout/food_diary.xml                                                   15              0             89
+app/src/main/res/layout/new_food.xml                                                     15              0             72
+app/src/main/java/com/example/rose/caloreats/DiaryFragment.java                          19              5             72
+app/src/main/java/com/example/rose/caloreats/Graph.java                                  29              2             69
+app/src/main/java/com/example/rose/caloreats/MainActivity.java                           22              1             68
+app/src/main/java/com/example/rose/caloreats/DatabaseHelper.java                         16              4             60
+app/src/main/java/com/example/rose/caloreats/SummaryFragment.java                        13              4             52
+app/src/main/java/com/example/rose/caloreats/Restaurant.java                             13              1             52
+app/src/main/res/layout/search_layout.xml                                                 8              0             50
+app/src/main/java/com/example/rose/caloreats/Food.java                                   19              0             49
+app/src/main/res/layout/food_item.xml                                                     3              0             44
+app/src/main/java/com/example/rose/caloreats/MyPagerAdapter.java                         11              3             38
+app/src/main/AndroidManifest.xml                                                          1              2             37
+app/src/main/res/layout/user_settings.xml                                                 5              0             36
+app/src/main/java/com/example/rose/caloreats/DiaryAdapter.java                           13              0             36
+app/src/main/java/com/example/rose/caloreats/Storage.java                                15              6             35
+app/src/main/res/drawable-v24/ic_launcher_foreground.xml                                  0              0             34
+app/src/main/res/layout/suggestion_layout.xml                                             7              0             33
+app/src/main/java/com/example/rose/caloreats/FirestoreGlideModule.java                    7              6             32
+app/src/main/java/com/example/rose/caloreats/Settings.java                                7              0             25
+app/src/main/res/values/strings.xml                                                       0              0             20
+app/src/main/res/layout/activity_main.xml                                                 4              0             20
+app/src/main/res/layout/food_info.xml                                                     3              0             14
+app/src/main/res/menu/user_menu.xml                                                       0              0             10
+app/src/main/res/drawable/ic_cloud_download_black_24dp.xml                                0              0              9
+app/src/main/res/values/styles.xml                                                        2              2              7
+app/src/main/res/values/colors.xml                                                        0              0              6
+app/src/main/res/values/google_maps_api.xml                                               0             12              5
+app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml                                  0              0              5
+-------------------------------------------------------------------------------------------------------------------------
+SUM:                                                                                    546             97           2366
+-------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
+Language                     files          blank        comment           code
+-------------------------------------------------------------------------------
+Java                            18            462             81           1570
+XML                             19             84             16            796
+-------------------------------------------------------------------------------
+SUM:                            37            546             97           2366
+-------------------------------------------------------------------------------
