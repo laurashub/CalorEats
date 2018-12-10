@@ -182,16 +182,13 @@ public class Firestore {
             Toast.makeText(context,
                     "Unable to set calorie limit to this value " +
                             "- please pick a value between 1200 and 4000", Toast.LENGTH_LONG).show();
+        } else {
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            Map<String, Integer> map = new HashMap<>();
+            map.put("limit", limit);
+            db.collection("users").document(user.getUid()).set(map, SetOptions.merge());
         }
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        Map<String, Integer> map = new HashMap<>();
-        map.put("limit", limit);
-        db.collection("users").document(user.getUid()).set(map, SetOptions.merge());
     }
 
-    //overrides so I don't have to call every time with a bunch of nulls
-    public void getFoods(final String date, final DiaryAdapter da){
-        getFoods(date, da, null, null, null);
-    }
 
 }

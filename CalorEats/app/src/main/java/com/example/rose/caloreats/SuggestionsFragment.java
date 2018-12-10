@@ -276,7 +276,7 @@ public class SuggestionsFragment extends Fragment {
                 }
 
                 Cursor c = db.query(table, columns.split(","), queryString,
-                        args.toArray(new String[0]), "", "", "");
+                        args.toArray(new String[0]), "", "", "price");
 
                 cArray.add(c);
 

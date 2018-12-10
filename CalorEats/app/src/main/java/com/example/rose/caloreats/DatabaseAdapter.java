@@ -99,10 +99,12 @@ public class DatabaseAdapter extends CursorAdapter {
         if (c != null) {
             if (c.getCount() != 1) {
                 Toast.makeText(mContext, "Something went wrong, please try again.", Toast.LENGTH_SHORT).show();
+                c.close();
                 return "BAD";
             } else {
                 c.moveToFirst();
                 String restaurantName = c.getString(c.getColumnIndexOrThrow("name"));
+                c.close();
                 return restaurantName;
             }
         }
@@ -141,6 +143,7 @@ public class DatabaseAdapter extends CursorAdapter {
                 String url = c.getString(c.getColumnIndexOrThrow("url"));
                 restaurantInfo.setUrl(url);
             }
+            c.close();
         }
 
         //get location information

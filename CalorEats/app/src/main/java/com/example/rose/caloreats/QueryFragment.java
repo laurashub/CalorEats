@@ -14,9 +14,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.ArrayAdapter;
-import android.widget.TextView;
 import android.content.Context;
-import android.app.Activity;
 import android.widget.Toast;
 
 import java.io.IOException;
