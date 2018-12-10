@@ -73,7 +73,7 @@ public class NewFood extends AppCompatActivity {
         websiteT.setText(Html.fromHtml("<a href=\"" + res.url + "\">Website</a>"));
         websiteT.setMovementMethod(LinkMovementMethod.getInstance());
         caloriesT.setText("Calories: " + cals);
-        priceT.setText("Price: " + price);
+        priceT.setText("Price: $" + price);
 
         final Food food = new Food( name, cals, price);
         food.setRestaurant(res.name);

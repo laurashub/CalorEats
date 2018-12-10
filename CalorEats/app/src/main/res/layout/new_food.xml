@@ -8,50 +8,70 @@
     <LinearLayout
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:weightSum="12.25">
 
     <TextView
         android:id="@+id/title"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"/>
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:textSize="30sp"
+        android:gravity="center"/>
 
     <TextView
         android:id="@+id/restaurant"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"/>
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:textSize="25sp"
+        android:layout_marginStart="4dp"
+        android:layout_weight="0.75"/>
 
-        <TextView
-            android:id="@+id/website"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"/>
 
     <TextView
         android:id="@+id/calories"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"/>
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:textSize="20sp"
+        android:layout_marginStart="4dp"
+        android:layout_weight="0.5"/>
 
     <TextView
         android:id="@+id/price"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"/>
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:textSize="20sp"
+        android:layout_marginStart="4dp"
+        android:layout_weight="0.5"/>
+
+        <TextView
+            android:id="@+id/website"
+            android:layout_height="0dp"
+            android:textSize="20sp"
+            android:layout_width="match_parent"
+            android:layout_marginStart="4dp"
+            android:layout_weight="0.5"/>
 
     <ImageView
         android:id="@+id/food_image"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_width="match_parent"
         android:adjustViewBounds="true"
+        android:layout_weight="7"
         />
 
         <Button
             android:id="@+id/map_button"
+            android:layout_height="0dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="Show on map"/>
 
     <Button
         android:id="@+id/save_button"
+        android:layout_height="0dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:text="Save"/>
 
     </LinearLayout>

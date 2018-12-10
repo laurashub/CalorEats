@@ -21,6 +21,8 @@ import com.google.firebase.firestore.SetOptions;
 import android.support.v4.app.Fragment;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.content.Context;
 
 import org.w3c.dom.Text;
 
@@ -184,7 +186,12 @@ public class Firestore {
 
     }
 
-    public void setCalLimit(int limit){
+    public void setCalLimit(Context context, int limit){
+        if (limit < 1200 || limit > 4000){
+            Toast.makeText(context,
+                    "Unable to set calorie limit to this value " +
+                            "- please pick a value between 1200 and 4000", Toast.LENGTH_LONG).show();
+        }
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         Map<String, Integer> map = new HashMap<>();
         map.put("limit", limit);

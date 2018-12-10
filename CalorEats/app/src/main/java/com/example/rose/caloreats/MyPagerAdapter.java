@@ -11,12 +11,10 @@ import java.util.ArrayList;
 public class MyPagerAdapter extends FragmentPagerAdapter {
 
     private static int NUM_ITEMS = 4;
-    UserData userData;
     private static String[] names = new String[]{"Suggestions","Query", "Diary", "Summary"};
 
-    public MyPagerAdapter(FragmentManager fragmentManager, UserData userData_) {
+    public MyPagerAdapter(FragmentManager fragmentManager) {
         super(fragmentManager);
-        userData = userData_;
     }
 
     // Returns total number of pages
@@ -34,9 +32,9 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
             case 1: // Fragment # 0 - This will show FirstFragment different title
                 return QueryFragment.newInstance("Query");
             case 2: // Fragment # 1 - This will show SecondFragment
-                return DiaryFragment.newInstance("Diary", userData);
+                return DiaryFragment.newInstance("Diary");
             case 3:
-                return SummaryFragment.newInstance( "Summary", userData);
+                return SummaryFragment.newInstance( "Summary");
             default:
                 return null;
         }

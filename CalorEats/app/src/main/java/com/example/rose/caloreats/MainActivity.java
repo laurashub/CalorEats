@@ -66,11 +66,10 @@ public class MainActivity extends AppCompatActivity {
         Storage storage = Storage.getInstance();
         storage.init(getApplicationContext());
 
-        UserData data = new UserData();
-
         ViewPager vpPager = (ViewPager) findViewById(R.id.vpPager);
-        adapterViewPager = new MyPagerAdapter(getSupportFragmentManager(), data);
+        adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());
         vpPager.setAdapter(adapterViewPager);
+        vpPager.setCurrentItem(1);
     }
 
     @Override

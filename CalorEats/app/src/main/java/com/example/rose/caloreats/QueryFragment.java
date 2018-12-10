@@ -123,7 +123,7 @@ public class QueryFragment extends Fragment {
         Log.d("query", queryString);
 
         Cursor c = db.query(table, columns.split(","), queryString,
-                args.toArray(new String[0]), "", "", "");
+                args.toArray(new String[0]), "", "", "calories");
 
         //update listview
         da.changeCursor(c);
@@ -162,7 +162,7 @@ public class QueryFragment extends Fragment {
                 return "BAD";
             } else {
                 c.moveToFirst();
-                String resID = c.getString(c.getColumnIndexOrThrow("restaurants._id"));
+                String resID = c.getString(c.getColumnIndexOrThrow("_id"));
                 System.out.println(resID);
                 return resID;
             }

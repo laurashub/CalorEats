@@ -9,11 +9,13 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.LatLngBounds;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -220,23 +222,31 @@ public class MapHolder implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) { gMap = googleMap; }
 
-    public void showAddress(ArrayList<String> addresses) {
+    public void showAddress(final ArrayList<String> addresses) {
         if (warnIfNotReady()) {
             System.out.println("NOT READY");
             return;
         }
-
         System.out.println("Getting LatLangs");
+
+        final LatLngBounds.Builder builder = new LatLngBounds.Builder();
         //add all addresses to map
         for(final String address : addresses) {
-
             new NameToLatLngTask(context, address,
                     new NameToLatLngTask.OnLatLngCallback() {
                         @Override
                         public void onLatLng(LatLng a) {
                             System.out.println("Address: " + address + ", LatLang: " + a);
+
                             gMap.addMarker(new MarkerOptions().position(a));
-                            gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(a, defaultZoom));
+                            if (addresses.size() == 1){
+                                gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(a, defaultZoom));
+                            } else {
+                                builder.include(a);
+                                LatLngBounds bounds = builder.build();
+                                gMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 50));
+                            }
+
                         }
                     });
         }

@@ -5,26 +5,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="7.5">
+
     <TextView
         android:id="@+id/calorie_limit"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text = "Current Daily Limit"/>
+        android:layout_width="0dp"
+        android:textSize="20sp"
+        android:text = "Current Daily Limit:"
+        android:layout_weight="3.4"/>
 
     <EditText
         android:id="@+id/cal_limit_edit"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:inputType="number"
-        app:layout_constraintLeft_toRightOf="@+id/calorie_limit"/>
+        app:layout_constraintLeft_toRightOf="@+id/calorie_limit"
+        android:layout_weight="3"/>
 
     <Button
         android:id="@+id/cal_limit_new"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:text="Set"
         android:onClick="setClicked"
         app:layout_constraintLeft_toRightOf="@+id/cal_limit_edit"
+        android:layout_weight="1.1"
         />
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

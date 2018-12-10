@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.app.ActivityCompat;
@@ -73,6 +74,8 @@ public class SuggestionsFragment extends Fragment {
     ArrayList<String> dates;
     DatabaseAdapter da;
 
+    ProgressBar progressBar;
+
     // newInstance constructor for creating fragment with arguments
     public static SuggestionsFragment newInstance(String title) {
         SuggestionsFragment suggestionsFragment = new SuggestionsFragment();
@@ -116,6 +119,9 @@ public class SuggestionsFragment extends Fragment {
 
         dates = Firestore.getInstance().getDateArray();
 
+        progressBar = view.findViewById(R.id.pb);
+        progressBar.setVisibility(View.GONE);
+
         getActivity().getSupportFragmentManager().beginTransaction()
                 .add(R.id.map_fragment, mapFragment)
                 .hide(mapFragment)
@@ -136,6 +142,7 @@ public class SuggestionsFragment extends Fragment {
 
     public void getMyLocation() {
         System.out.println("Finding closest restaurant");
+
         // Acquire a reference to the system Location Manager
         lm = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 
@@ -165,6 +172,7 @@ public class SuggestionsFragment extends Fragment {
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     123);
         } else {
+            progressBar.setVisibility(View.VISIBLE);
             lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
         }
 
@@ -280,6 +288,12 @@ public class SuggestionsFragment extends Fragment {
             }
 
             MergeCursor mc = new MergeCursor(cArray.toArray(new Cursor[0]));
+
+            if (mc == null){
+                Toast.makeText(getContext(), "Unable to find any suggestions", Toast.LENGTH_SHORT);
+            }
+
+            progressBar.setVisibility(View.GONE);
             da.changeCursor(mc);
 
 
@@ -315,7 +329,7 @@ public class SuggestionsFragment extends Fragment {
                 return "BAD";
             } else {
                 c.moveToFirst();
-                String resID = c.getString(c.getColumnIndexOrThrow("locations.restaurant_id"));
+                String resID = c.getString(c.getColumnIndexOrThrow("restaurant_id"));
                 System.out.println(resID);
                 return resID;
             }

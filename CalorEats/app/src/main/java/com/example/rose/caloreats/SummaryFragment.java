@@ -14,12 +14,10 @@ import android.widget.TextView;
 public class SummaryFragment extends Fragment {
     // Store instance variables
     private String title;
-    UserData userData;
 
     // newInstance constructor for creating fragment with arguments
-    public static SummaryFragment newInstance(String title, UserData userData_) {
+    public static SummaryFragment newInstance(String title) {
         SummaryFragment summaryFragment = new SummaryFragment();
-        summaryFragment.userData = userData_;
         Bundle args = new Bundle();
         args.putString("title", title);
         summaryFragment.setArguments(args);

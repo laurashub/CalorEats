@@ -10,7 +10,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class DiaryFragment extends Fragment {
@@ -18,13 +17,11 @@ public class DiaryFragment extends Fragment {
     private String title;
     private int page;
     private int diaryIndex;
-    private UserData userData;
     private ArrayList<String> dates;
 
     // newInstance constructor for creating fragment with arguments
-    public static DiaryFragment newInstance(String title,  UserData userData_) {
+    public static DiaryFragment newInstance(String title) {
         DiaryFragment diaryFragment = new DiaryFragment();
-        diaryFragment.userData = userData_;
         Bundle args = new Bundle();
         args.putString("title", title);
         diaryFragment.setArguments(args);
@@ -90,6 +87,7 @@ public class DiaryFragment extends Fragment {
         TextView dateView = (TextView) v.findViewById(R.id.date_text);
 
         TextView eaten = v.findViewById(R.id.eaten);
+        Firestore.getInstance().getCalLimit(null, (TextView) v.findViewById(R.id.limit), null);
 
         dateView.setText("Date: " + dates.get(diaryIndex));
         DiaryAdapter da = new DiaryAdapter(getContext(), new ArrayList<Food>());

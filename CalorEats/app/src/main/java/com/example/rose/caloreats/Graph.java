@@ -20,7 +20,7 @@ public class Graph extends View {
     Paint paint;
     ArrayList<String> dates;
     HashMap<String, Integer> totals;
-    int xIncrement = 15;
+    int xIncrement = 17;
     int yIncrement;
     int limit;
 
@@ -43,7 +43,7 @@ public class Graph extends View {
             yIncrement += 200;
 
             //only draw if we have all the information that we need
-            float unit_width = (float) getWidth() / 15;
+            float unit_width = (float) getWidth() / xIncrement;
             float unit_height = (float) getHeight() / yIncrement;
 
             System.out.println("Width: " + unit_width + ", height: " + unit_height);
@@ -80,9 +80,9 @@ public class Graph extends View {
             paint.setStyle(Paint.Style.FILL);
 
             for (int i = 0; i < 7; i++) {
-                canvas.drawRect(unit_width * (2 * i + 1),
+                canvas.drawRect(unit_width * ((2*(i+1))+1),
                         getHeight() - unit_height * (totals.getOrDefault(dates.get(6 - i), 0)),
-                        unit_width * (2 * i + 2), getHeight(), paint);
+                        unit_width * ((2*(i+1))+2), getHeight(), paint);
             }
         }
     }
