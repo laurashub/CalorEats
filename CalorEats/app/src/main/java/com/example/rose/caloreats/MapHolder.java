@@ -224,10 +224,9 @@ public class MapHolder implements OnMapReadyCallback {
 
     public void showAddress(final ArrayList<String> addresses) {
         if (warnIfNotReady()) {
-            System.out.println("NOT READY");
+            Log.d("showAddress", "Map not ready");
             return;
         }
-        System.out.println("Getting LatLangs");
 
         final LatLngBounds.Builder builder = new LatLngBounds.Builder();
         //add all addresses to map
@@ -236,8 +235,6 @@ public class MapHolder implements OnMapReadyCallback {
                     new NameToLatLngTask.OnLatLngCallback() {
                         @Override
                         public void onLatLng(LatLng a) {
-                            System.out.println("Address: " + address + ", LatLang: " + a);
-
                             gMap.addMarker(new MarkerOptions().position(a));
                             if (addresses.size() == 1){
                                 gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(a, defaultZoom));

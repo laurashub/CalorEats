@@ -158,12 +158,11 @@ public class QueryFragment extends Fragment {
 
         if (c != null) {
             if (c.getCount() != 1) {
-                System.out.println("Something's wrong :(");
+                Toast.makeText(getContext(), "Something went wrong, please try again.", Toast.LENGTH_SHORT).show();
                 return "BAD";
             } else {
                 c.moveToFirst();
                 String resID = c.getString(c.getColumnIndexOrThrow("_id"));
-                System.out.println(resID);
                 return resID;
             }
         }

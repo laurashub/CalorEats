@@ -1,5 +1,7 @@
 package com.example.rose.caloreats;
 
+//Taken from FC7
+
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;

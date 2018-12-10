@@ -12,10 +12,10 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+//diary fragment, controls diary screen
+
 public class DiaryFragment extends Fragment {
     // Store instance variables
-    private String title;
-    private int page;
     private int diaryIndex;
     private ArrayList<String> dates;
 
@@ -32,7 +32,6 @@ public class DiaryFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        title = getArguments().getString("title");
     }
 
     // Inflate the view for the fragment based on layout XML
@@ -91,7 +90,7 @@ public class DiaryFragment extends Fragment {
 
         dateView.setText("Date: " + dates.get(diaryIndex));
         DiaryAdapter da = new DiaryAdapter(getContext(), new ArrayList<Food>());
-        Firestore.getInstance().getFoods(dates.get(diaryIndex), da, null, eaten);
+        Firestore.getInstance().getFoods(dates.get(diaryIndex), da, null, eaten, null);
         listView.setAdapter(da);
     }
 }

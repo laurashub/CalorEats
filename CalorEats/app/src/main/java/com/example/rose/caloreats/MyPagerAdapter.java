@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentManager;
 
-import java.util.ArrayList;
 
 public class MyPagerAdapter extends FragmentPagerAdapter {
 
@@ -27,11 +26,11 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         switch (position) {
-            case 0: // Fragment # 0 - This will show FirstFragment
+            case 0:
                 return SuggestionsFragment.newInstance("Suggestions");
-            case 1: // Fragment # 0 - This will show FirstFragment different title
+            case 1:
                 return QueryFragment.newInstance("Query");
-            case 2: // Fragment # 1 - This will show SecondFragment
+            case 2:
                 return DiaryFragment.newInstance("Diary");
             case 3:
                 return SummaryFragment.newInstance( "Summary");
@@ -40,7 +39,6 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
         }
     }
 
-    // Returns the page title for the top indicator
     @Override
     public CharSequence getPageTitle(int position) {
         return names[position];

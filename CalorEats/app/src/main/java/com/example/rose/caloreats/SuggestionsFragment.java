@@ -141,7 +141,6 @@ public class SuggestionsFragment extends Fragment {
     }
 
     public void getMyLocation() {
-        System.out.println("Finding closest restaurant");
 
         // Acquire a reference to the system Location Manager
         lm = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
@@ -199,7 +198,7 @@ public class SuggestionsFragment extends Fragment {
 
 
         if (c == null) {
-            System.out.println("Something's wrong - location :(");
+            Toast.makeText(getContext(), "Something went wrong, please try again.", Toast.LENGTH_SHORT).show();
         } else {
             while(c.moveToNext()) {
                 String address = c.getString(c.getColumnIndexOrThrow("address"));
@@ -251,11 +250,7 @@ public class SuggestionsFragment extends Fragment {
         if (data.get(dates.get(0)) != null && data.get("limit") != null) {
             calsRemaining = data.get("limit") - data.get(dates.get(0));
 
-            System.out.println("Cals remaining: " + calsRemaining);
-
             for (String address : sortedAddresses){
-                System.out.println(address);
-
                 //get restaurant id of corresponding
                 String res_id = getRestaurantIDfromAddress(address);
 
@@ -290,13 +285,11 @@ public class SuggestionsFragment extends Fragment {
             MergeCursor mc = new MergeCursor(cArray.toArray(new Cursor[0]));
 
             if (mc == null){
-                Toast.makeText(getContext(), "Unable to find any suggestions", Toast.LENGTH_SHORT);
+                Toast.makeText(getContext(), "Unable to find any suggestions.", Toast.LENGTH_SHORT);
             }
 
             progressBar.setVisibility(View.GONE);
             da.changeCursor(mc);
-
-
         }
 
     }
@@ -325,12 +318,11 @@ public class SuggestionsFragment extends Fragment {
 
         if (c != null) {
             if (c.getCount() != 1) {
-                System.out.println("Something's wrong :(");
+                Toast.makeText(getContext(), "Something went wrong, please try again.",Toast.LENGTH_SHORT).show();
                 return "BAD";
             } else {
                 c.moveToFirst();
                 String resID = c.getString(c.getColumnIndexOrThrow("restaurant_id"));
-                System.out.println(resID);
                 return resID;
             }
         }
@@ -349,8 +341,7 @@ public class SuggestionsFragment extends Fragment {
 
 
 
-    //should never get into this because the permisison is in the manifest but Android studio complains
-    //if I don't error check it
+    //Get permission to use location
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
@@ -359,10 +350,6 @@ public class SuggestionsFragment extends Fragment {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                        // permission was granted
-                        System.out.println("permission granted!");
-
-                        //try again
                         getMyLocation();
                     } else {
 
@@ -371,7 +358,4 @@ public class SuggestionsFragment extends Fragment {
                 }
             }
         }
-    /*
-        https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=Washington,DC&destinations=New+York+City,NY&key=YOUR_API_KEY
-        origin*/
 }

@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.OnCompleteListener;
-
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -18,19 +17,15 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.SetOptions;
-import android.support.v4.app.Fragment;
+
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.content.Context;
 
-import org.w3c.dom.Text;
-
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Set;
 
 public class Firestore {
 
@@ -80,14 +75,12 @@ public class Firestore {
     }
 
 
-    public ArrayList<Food> getFoods(final String date, final DiaryAdapter da,
+    public void getFoods(final String date, final DiaryAdapter da,
                                     final Graph weekly, final TextView totalTV,
                                     final HashMap<String, Integer> totals) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
             final ArrayList<Food> dailyFood = new ArrayList<>();
-
-            System.out.println("Query on: users/" + user.getUid() + "/" + date);
 
             db.collection("users/" + user.getUid() + "/" + date)
                     .get()
@@ -129,8 +122,6 @@ public class Firestore {
                             }
                         }
                     });
-
-            return dailyFood;
 
     }
 
@@ -179,7 +170,7 @@ public class Firestore {
                     }
 
                 } else {
-                    System.out.println("does not exist!");
+                    Log.d("getCalLimit", "Unable to retrieve calorie limit");
                 }
             }
         });
@@ -198,9 +189,9 @@ public class Firestore {
         db.collection("users").document(user.getUid()).set(map, SetOptions.merge());
     }
 
-    public ArrayList<Food> getFoods(final String date, final DiaryAdapter da,
-                                    final Graph weekly, final TextView totalTV){
-        return getFoods(date, da, weekly, totalTV, null);
-
+    //overrides so I don't have to call every time with a bunch of nulls
+    public void getFoods(final String date, final DiaryAdapter da){
+        getFoods(date, da, null, null, null);
     }
+
 }

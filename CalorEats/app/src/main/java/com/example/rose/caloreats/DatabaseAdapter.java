@@ -14,12 +14,8 @@ import android.widget.TextView;
 
 import android.app.Activity;
 
-import android.os.Bundle;
-
 import android.database.Cursor;
-import android.net.Uri;
-import android.text.method.LinkMovementMethod;
-import android.text.Html;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,21 +51,8 @@ public class DatabaseAdapter extends CursorAdapter {
         final String name = cursor.getString(cursor.getColumnIndexOrThrow("name"));
         final String cals = cursor.getString(cursor.getColumnIndexOrThrow("calories"));
         final String price = cursor.getString(cursor.getColumnIndexOrThrow("price"));
-
-        System.out.println("Binding view for " + name);
         final String restaurantID = cursor.getString(cursor.getColumnIndexOrThrow("restaurant_id"));
         final String restaurant = getRestaurantName(restaurantID);
-        /*
-        int priceNum = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow("price")));
-        restaurantPhone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
-                v.getContext().startActivity(intent);
-            }
-        });
-        restaurantUrl.setText(Html.fromHtml("<a href=\"" + url + "\">website</a>"));
-        restaurantUrl.setMovementMethod(LinkMovementMethod.getInstance());*/
 
         foodName.setText(name);
         foodCalories.setText(cals);
@@ -115,12 +98,11 @@ public class DatabaseAdapter extends CursorAdapter {
 
         if (c != null) {
             if (c.getCount() != 1) {
-                System.out.println("Something's wrong :(");
+                Toast.makeText(mContext, "Something went wrong, please try again.", Toast.LENGTH_SHORT).show();
                 return "BAD";
             } else {
                 c.moveToFirst();
                 String restaurantName = c.getString(c.getColumnIndexOrThrow("name"));
-                System.out.println(restaurantName);
                 return restaurantName;
             }
         }
@@ -153,11 +135,10 @@ public class DatabaseAdapter extends CursorAdapter {
 
         if (c != null) {
             if (c.getCount() != 1) {
-                System.out.println("Something's wrong :(");
+                Toast.makeText(mContext, "Something went wrong, please try again.", Toast.LENGTH_SHORT).show();
             } else {
                 c.moveToFirst();
                 String url = c.getString(c.getColumnIndexOrThrow("url"));
-                System.out.println(url);
                 restaurantInfo.setUrl(url);
             }
         }
@@ -188,7 +169,7 @@ public class DatabaseAdapter extends CursorAdapter {
 
 
         if (c == null) {
-            System.out.println("Something's wrong - location :(");
+            Toast.makeText(mContext, "Something went wrong, please try again.", Toast.LENGTH_SHORT).show();
         } else {
             while(c.moveToNext()) {
                 String address = c.getString(c.getColumnIndexOrThrow("address"));

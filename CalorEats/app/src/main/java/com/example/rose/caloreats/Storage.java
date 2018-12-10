@@ -1,17 +1,13 @@
 package com.example.rose.caloreats;
 
+
+import android.util.Log;
+
 import android.content.Context;
 import android.widget.ImageView;
 
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-
-import android.support.annotation.NonNull;
-import android.widget.Toast;
 
 //* Modified from FCFireDist Storage file*//
 
@@ -42,30 +38,13 @@ public class Storage {
                 .child(food.getName() + ".jpg");
     }
 
-    /*
-    public void uploadJpg (Food photoObject, byte[] data) {
-        StorageReference newImage = fileStorage(photoObject);
-        UploadTask uploadTask = newImage.putBytes(data);
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-            }
-        });
-    }*/
-
     public void displayJpg(Food food, ImageView imageView) {
 
         //download jpg
         StorageReference getImage = fileStorage(food);
 
         if (getImage == null){
-            System.out.println("IMAGE IS NULL");
+            Log.e("displayJpg", "Image is null");
         }
 
         GlideApp.with(context)

@@ -1,12 +1,9 @@
 package com.example.rose.caloreats;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import android.view.View;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,7 +21,6 @@ import android.content.Intent;
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
-    ArrayList<ArrayList<Food>> diary;
     int RQ_CODE = 123;
     FragmentPagerAdapter adapterViewPager;
 

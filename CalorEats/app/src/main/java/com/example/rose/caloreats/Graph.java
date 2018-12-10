@@ -7,12 +7,9 @@ import android.util.AttributeSet;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Collections;
-
-//enum Type{ BAR, PIE }
 
 //similar to project 4 tetris view extension
 public class Graph extends View {
@@ -46,8 +43,6 @@ public class Graph extends View {
             float unit_width = (float) getWidth() / xIncrement;
             float unit_height = (float) getHeight() / yIncrement;
 
-            System.out.println("Width: " + unit_width + ", height: " + unit_height);
-
             paint.setColor(Color.BLACK);
             paint.setStyle(Paint.Style.FILL);
 
@@ -65,7 +60,6 @@ public class Graph extends View {
 
                 paint.setTextSize(30);
                 canvas.drawText(Integer.toString(yIncrement - (i * 200)), 5, i * 200 * unit_height-2, paint);
-                System.out.println("Drawing line at: " + Integer.toString(i * 200));
             }
 
             paint.setColor(Color.RED);
@@ -73,8 +67,6 @@ public class Graph extends View {
 
             canvas.drawRect(0, getHeight() - unit_height * totals.get("limit")-(2*unit_height),
                     getWidth(), (getHeight() - unit_height * totals.get("limit")) + (2*unit_height) , paint);
-
-            System.out.println("Drawing limit line");
 
             paint.setColor(Color.BLUE);
             paint.setStyle(Paint.Style.FILL);

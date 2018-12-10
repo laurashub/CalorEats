@@ -60,7 +60,6 @@ public class Food {
 
     public String getFoodId(){
         String foodID = (restaurant+"/"+name).replaceAll(" ", "_").toLowerCase();
-        System.out.println("Food ID: " + foodID);
         return foodID;
     }
 

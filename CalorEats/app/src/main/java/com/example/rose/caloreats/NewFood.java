@@ -1,16 +1,10 @@
 package com.example.rose.caloreats;
 
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
-import android.util.Log;
 import android.view.View;
 import android.content.Intent;
 
@@ -64,9 +58,6 @@ public class NewFood extends AppCompatActivity {
         String price = intent.getStringExtra("price");
         final Restaurant res = intent.getParcelableExtra("restaurant");
 
-        for(String address : res.locations){
-            System.out.println("LOCATION: " + address);
-        }
 
         titleT.setText(name);
         restaurantT.setText(res.name);

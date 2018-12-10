@@ -1,9 +1,7 @@
 package com.example.rose.caloreats;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +11,6 @@ import android.widget.TextView;
 
 public class SummaryFragment extends Fragment {
     // Store instance variables
-    private String title;
 
     // newInstance constructor for creating fragment with arguments
     public static SummaryFragment newInstance(String title) {
@@ -28,7 +25,6 @@ public class SummaryFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        title = getArguments().getString("title");
     }
 
     // Inflate the view for the fragment based on layout XML
@@ -58,20 +54,15 @@ public class SummaryFragment extends Fragment {
         for (String date : dates){
             String[] splitDate = date.split("-");
             days.get(i).setText(splitDate[1] + "/" + splitDate[2]);
-            System.out.println("Assigning day " + i + ": " + splitDate[1] + "/" + splitDate[2]);
             if (i==0){
-                Firestore.getInstance().getFoods(date, null, weekly, eaten);
+                Firestore.getInstance().getFoods(date, null, weekly, eaten, null);
             }
 
             else{
-                Firestore.getInstance().getFoods(date, null, weekly, null);
+                Firestore.getInstance().getFoods(date, null, weekly, null, null);
             }
             i++;
         }
-
-
-
-
 
         return view;
     }

@@ -25,17 +25,8 @@ public class Settings extends AppCompatActivity {
     public void setClicked(View view){
         int new_limit = Integer.parseInt(cal_limit.getText().toString());
         Firestore.getInstance().setCalLimit(getApplicationContext(), new_limit);
-    }
-
-    public void cancelClicked(View view){
         finish();
     }
-
-    public void okClicked(View view){
-        finish(); // calls onDestroy
-    }
-
-
 
 
 }
